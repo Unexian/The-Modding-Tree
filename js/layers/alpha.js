@@ -1,4 +1,4 @@
-addLayer("alpha", {
+addLayer("a", {
     name: "Alpha", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "α", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
@@ -50,7 +50,7 @@ addLayer("alpha", {
     upgrades: {
         11: {
             title: "Basic boost",
-            description: "Multiply alpha power base by 1.2.",
+            description: "Multiply alpha power base by 1.1.",
             cost: new Decimal(10)
         },
         12: {
@@ -65,25 +65,29 @@ addLayer("alpha", {
         },
         22: {
             title: "Secondary boost",
-            description: "Multiply T2 alpha generator base by 1.2.",
+            description: "Multiply T2 alpha generator base by 1.5.",
             cost: new Decimal(100)
         },
         31: {
             title: "Tertiary boost",
-            description: "Multiply T3 alpha generator base by 1.2.",
+            description: "Multiply T3 alpha generator base by 2.",
             cost: new Decimal(250)
         },
         32: {
             title: "Quaternary boost",
-            description: "Multiply T4 alpha generator base by 1.2.",
+            description: "Multiply T4 alpha generator base by 2.5.",
             cost: new Decimal(500)
         },
     },
     buyables: {
         11: {
             title: "T1 alpha generator",
-            cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(3).pow(x.div(5).floor()).floor() },
-            display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T1 alpha generators generating " + format(this.effect()) + " points every second.<br>Your next T1 alpha generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " alpha." },
+            cost(x) {
+                if (x === undefined) x = getBuyableAmount(this.layer, this.id);
+                if (x == 0) return new Decimal(0)
+                return new Decimal(3).pow(x.div(5).floor()).floor()
+            },
+            display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T1 alpha generators generating " + format(this.effect()) + " alpha power every second.<br>Your next T1 alpha generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " alpha." },
             effect() {
                 if (hasUpgrade(this.layer, 12)) { return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(1.2) }
                 return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id])
@@ -101,7 +105,7 @@ addLayer("alpha", {
             cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(5).pow(x.div(3).floor()).mul(5) },
             display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T2 alpha generators generating " + format(this.effect()) + " T1 alpha generators every second.<br>Your next T2 alpha generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " alpha." },
             effect() {
-                if (hasUpgrade(this.layer, 22)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(1.2).div(10)
+                if (hasUpgrade(this.layer, 22)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(1.5).div(10)
                 return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(10)
             },
             buy() {
@@ -118,7 +122,7 @@ addLayer("alpha", {
             cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(10).pow(x).mul(15) },
             display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T3 alpha generators generating " + format(this.effect()) + " T2 alpha generators every second.<br>Your next T3 alpha generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " alpha." },
             effect() {
-                if (hasUpgrade(this.layer, 31)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(1.2).div(100)
+                if (hasUpgrade(this.layer, 31)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(2).div(100)
                 return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(100)
             },
             buy() {
@@ -135,7 +139,7 @@ addLayer("alpha", {
             cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(25).pow(x).mul(50) },
             display() { return "You have " + getBuyableAmount(this.layer, this.id) + " T4 alpha generators generating " + format(this.effect()) + " T3 alpha generators every second.<br>Your next T4 alpha generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " alpha." },
             effect() {
-                if (hasUpgrade(this.layer, 32)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(1.2).div(1000)
+                if (hasUpgrade(this.layer, 32)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(2.5).div(1000)
                 return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(1000)
             },
             buy() {
@@ -149,9 +153,9 @@ addLayer("alpha", {
         },
     },
     update(delta) {
-        player[this.layer].power = player[this.layer].power.add(buyableEffect(this.layer, 11).mul(delta))
-        player[this.layer].extraBuyables[11] = player[this.layer].extraBuyables[11].add(buyableEffect(this.layer, 12).mul(delta))
-        player[this.layer].extraBuyables[12] = player[this.layer].extraBuyables[12].add(buyableEffect(this.layer, 21).mul(delta))
-        player[this.layer].extraBuyables[21] = player[this.layer].extraBuyables[21].add(buyableEffect(this.layer, 22).mul(delta))
+        player[this.layer].power = player[this.layer].power.add(buyableEffect(this.layer, 11).mul(player.g.power.add(1)).mul(delta))
+        player[this.layer].extraBuyables[11] = player[this.layer].extraBuyables[11].add(buyableEffect(this.layer, 12).mul(player.g.power.add(1)).mul(delta))
+        player[this.layer].extraBuyables[12] = player[this.layer].extraBuyables[12].add(buyableEffect(this.layer, 21).mul(player.g.power.add(1)).mul(delta))
+        player[this.layer].extraBuyables[21] = player[this.layer].extraBuyables[21].add(buyableEffect(this.layer, 22).mul(player.g.power.add(1)).mul(delta))
     }
 })

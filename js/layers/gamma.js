@@ -1,7 +1,7 @@
-addLayer("b", {
-    name: "Beta", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "β", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+addLayer("g", {
+    name: "gamma", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "γ", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() {
         return {
             unlocked: true,
@@ -19,19 +19,19 @@ addLayer("b", {
         "prestige-button",
         "resource-display",
         ["display-text", function () {
-            return "You have " + format(player[this.layer].power) + " beta power, equating to a " + format(player[this.layer].power.div(5).add(1)) + "x multipliter to alpha power effect."
+            return "You have " + format(player[this.layer].power) + " gamma power, equating to a " + format(player[this.layer].power.div(5).add(1)) + "x multipliter to alpha generator speed."
         }],
         "blank",
         ["row", ["buyables", "upgrades"]]
     ],
-    color: "#8c8173",
+    color: "#949966",
     requires() {
-        if (hasUpgrade(this.layer, 12)) return new Decimal(5000)
-        return new Decimal(10000)
+        if (hasUpgrade(this.layer, 12)) return new Decimal(3000)
+        return new Decimal(5000)
     }, // Can be a function that takes requirement increases into account
-    resource: "beta", // Name of prestige currency
-    baseResource: "alpha power", // Name of resource prestige is based on
-    baseAmount() {return player.a.power}, // Get the current amount of baseResource
+    resource: "gamma", // Name of prestige currency
+    baseResource: "alpha", // Name of resource prestige is based on
+    baseAmount() {return player.a.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
@@ -44,46 +44,46 @@ addLayer("b", {
     row: 1, // Row the layer is in on the tree (0 is the first row)
     branches: ['a'],
     hotkeys: [
-        {key: "b", description: "B: Do a β reset.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+        {key: "g", description: "G: Do a γ reset.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     layerShown(){return true},
     upgrades: {
         11: {
-            title: "Betatic",
-            description: "Multiply beta power base by 1.5.",
+            title: "Wait, this doesn't boost beta?",
+            description: "Multiply gamma power base by 1.5.",
             cost: new Decimal(15)
         },
         12: {
-            title: "More beta power",
-            description: "Multiply T1 beta generator base by 1.5.",
+            title: "Gamma boost I",
+            description: "Multiply T1 gamma generator base by 1.5.",
             cost: new Decimal(40)
         },
         21: {
-            title: "Betatic increase",
-            description: "Divide beta cost base by 2",
+            title: "More gamma!",
+            description: "Multiply gamma cost base by 3/5",
             cost: new Decimal(75)
         },
         22: {
-            title: "Beta boosting",
-            description: "Multiply T2 beta generator base by 2.",
+            title: "Gamma boost II",
+            description: "Multiply T2 gamma generator base by 2.",
             cost: new Decimal(150)
         },
         31: {
-            title: "Third beta boost",
-            description: "Multiply T3 beta generator base by 5.",
+            title: "Gamma boost III",
+            description: "Multiply T3 gamma generator base by 5.",
             cost: new Decimal(300)
         },
         32: {
-            title: "Final beta boost",
-            description: "Multiply T4 beta generator base by 10.",
+            title: "Gamma boost IV",
+            description: "Multiply T4 gamma generator base by 10.",
             cost: new Decimal(750)
         },
     },
     buyables: {
         11: {
-            title: "T1 beta generator",
+            title: "T1 gamma generator",
             cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(4).pow(x.div(4).floor()).floor().mul(2) },
-            display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T1 beta generators generating " + format(this.effect()) + " beta power every second.<br>Your next T1 beta generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " beta." },
+            display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T1 gamma generators generating " + format(this.effect()) + " gamma power every second.<br>Your next T1 gamma generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " gamma." },
             effect() {
                 if (hasUpgrade(this.layer, 12)) { return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(1.5) }
                 return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id])
@@ -97,9 +97,9 @@ addLayer("b", {
             }
         },
         12: {
-            title: "T2 beta generator",
+            title: "T2 gamma generator",
             cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(7).pow(x.div(2).floor()).mul(7) },
-            display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T2 beta generators generating " + format(this.effect()) + " T1 beta generators every second.<br>Your next T2 beta generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " beta." },
+            display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T2 gamma generators generating " + format(this.effect()) + " T1 gamma generators every second.<br>Your next T2 gamma generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " gamma." },
             effect() {
                 if (hasUpgrade(this.layer, 22)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(2).div(10)
                 return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(10)
@@ -114,9 +114,9 @@ addLayer("b", {
             branches: [11]
         },
         21: {
-            title: "T3 beta generator",
+            title: "T3 gamma generator",
             cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(15).pow(x).mul(30) },
-            display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T3 beta generators generating " + format(this.effect()) + " T2 beta generators every second.<br>Your next T3 beta generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " beta." },
+            display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T3 gamma generators generating " + format(this.effect()) + " T2 gamma generators every second.<br>Your next T3 gamma generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " gamma." },
             effect() {
                 if (hasUpgrade(this.layer, 31)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(5).div(100)
                 return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(100)
@@ -131,9 +131,9 @@ addLayer("b", {
             branches: [12]
         },
         22: {
-            title: "T4 beta generator",
+            title: "T4 gamma generator",
             cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(30).pow(x).mul(75) },
-            display() { return "You have " + getBuyableAmount(this.layer, this.id) + " T4 beta generators generating " + format(this.effect()) + " T3 beta generators every second.<br>Your next T4 beta generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " beta." },
+            display() { return "You have " + getBuyableAmount(this.layer, this.id) + " T4 gamma generators generating " + format(this.effect()) + " T3 gamma generators every second.<br>Your next T4 gamma generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " gamma." },
             effect() {
                 if (hasUpgrade(this.layer, 32)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(10).div(1000)
                 return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(1000)

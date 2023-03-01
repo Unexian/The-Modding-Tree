@@ -3,24 +3,23 @@ let modInfo = {
 	id: "omega",
 	author: "Nif",
 	pointsName: "points",
-	modFiles: ["layers/alpha.js", "layers/beta.js", "tree.js"],
+	modFiles: ["layers/alpha.js", "layers/beta.js", "layers/gamma.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (5), // Used for hard resets and new players
+	initialStartPoints: new Decimal (0), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.1",
+	name: "The second row",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+	<h3>v0.1</h3><br>
+		- Added layers α, β, and γ.<br>`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -42,9 +41,10 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = player.alpha.power.div(5)
-	if (hasUpgrade('alpha', 11)) gain = gain.mul(1.2)
-	gain = gain.mul(player.beta.power)
+	let gain = player.a.power.div(5)
+	if (hasUpgrade('a', 11)) gain = gain.mul(1.1)
+	gain = gain.mul(player.b.power.add(1))
+	if (hasUpgrade('b', 11)) gain = gain.mul(1.5)
 	return gain
 }
 
@@ -58,7 +58,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e280000000"))
+	return (getBuyableAmount('g', 22) >= 1) && (getBuyableAmount('b', 22) >= 1)
 }
 
 
