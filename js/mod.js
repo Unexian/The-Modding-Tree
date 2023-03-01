@@ -1,13 +1,13 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
-	author: "nobody",
+	name: "Omega layers tree variant",
+	id: "omega",
+	author: "Nif",
 	pointsName: "points",
-	modFiles: ["layers.js", "tree.js"],
+	modFiles: ["layers/alpha.js", "layers/beta.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
+	initialStartPoints: new Decimal (5), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
@@ -42,7 +42,9 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(1)
+	let gain = player.alpha.power.div(5)
+	if (hasUpgrade('alpha', 11)) gain = gain.mul(1.2)
+	gain = gain.mul(player.beta.power)
 	return gain
 }
 
