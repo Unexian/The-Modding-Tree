@@ -1,5 +1,5 @@
 let modInfo = {
-	name: "Omega layers tree variant",
+	name: "The omega tree",
 	id: "omega",
 	author: "Nif",
 	pointsName: "points",
@@ -58,7 +58,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return (getBuyableAmount('g', 22) >= 1) && (getBuyableAmount('b', 22) >= 1)
+	return (getBuyableAmount('g', 22) >= 1) || (getBuyableAmount('b', 22) >= 1)
 }
 
 
