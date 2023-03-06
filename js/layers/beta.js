@@ -22,7 +22,10 @@ addLayer("b", {
             return "You have " + format(player[this.layer].power) + " beta power, equating to a " + format(player[this.layer].power.div(5).add(1)) + "x multipliter to alpha power effect."
         }],
         "blank",
-        ["row", ["buyables", "upgrades"]]
+        ["row", [
+            "buyables",
+            "upgrades"
+        ]]
     ],
     color: "#8c8173",
     requires() {

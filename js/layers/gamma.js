@@ -22,7 +22,10 @@ addLayer("g", {
             return "You have " + format(player[this.layer].power) + " gamma power, equating to a " + format(player[this.layer].power.div(5).add(1)) + "x multipliter to alpha generator speed."
         }],
         "blank",
-        ["row", ["buyables", "upgrades"]]
+        ["row", [
+            "buyables",
+            "upgrades"
+        ]]
     ],
     color: "#949966",
     requires() {

@@ -23,7 +23,10 @@ addLayer("a", {
             return "You have " + format(player[this.layer].power) + " alpha power, equating to " + format(player[this.layer].power.div(5)) + " points gained per second."
         }],
         "blank",
-        ["row", ["buyables", "upgrades"]]
+        ["row", [
+            "buyables",
+            "upgrades"
+        ]]
     ],
     color: "#808080",
     requires() {
