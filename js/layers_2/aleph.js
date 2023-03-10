@@ -10,7 +10,6 @@ addLayer("al", {
     },
     tabFormat: [
         "main-display",
-        "resource-display",
 
         ["display-text", "This layer is not implemented yet. It's coming, though!"]
     ],
