@@ -19,8 +19,8 @@ addLayer("a", {
         "prestige-button",
         "resource-display",
         ["display-text", function () {
-            if (hasUpgrade(this.layer, 11)) return "You have " + format(player[this.layer].power) + " alpha power, equating to " + format(player[this.layer].power.div(5).mul(1.2)) + " points gained per second."
-            return "You have " + format(player[this.layer].power) + " alpha power, equating to " + format(player[this.layer].power.div(5)) + " points gained per second."
+            if (hasUpgrade(this.layer, 11)) return "You have " + format(player[this.layer].power) + " alpha power, equating to " + format(player[this.layer].power.div(2).mul(1.1)) + " points gained per second."
+            return "You have " + format(player[this.layer].power) + " alpha power, equating to " + format(player[this.layer].power.div(2)) + " points gained per second."
         }],
         "blank",
         ["row", [
@@ -52,32 +52,32 @@ addLayer("a", {
     layerShown(){return true},
     upgrades: {
         11: {
-            title: "Basic boost",
+            title: "Alpha upgrade 1",
             description: "Multiply alpha power base by 1.1.",
             cost: new Decimal(10)
         },
         12: {
-            title: "Primary boost",
+            title: "Alpha upgrade 2",
             description: "Multiply T1 alpha generator base by 1.2.",
             cost: new Decimal(25)
         },
         21: {
-            title: "Alphatic increase",
+            title: "Alpha upgrade 3",
             description: "Decrease alpha cost base by 1.",
             cost: new Decimal(50)
         },
         22: {
-            title: "Secondary boost",
+            title: "Alpha upgrade 4",
             description: "Multiply T2 alpha generator base by 1.5.",
             cost: new Decimal(100)
         },
         31: {
-            title: "Tertiary boost",
+            title: "Alpha upgrade 5",
             description: "Multiply T3 alpha generator base by 2.",
             cost: new Decimal(250)
         },
         32: {
-            title: "Quaternary boost",
+            title: "Alpha upgrade 6",
             description: "Multiply T4 alpha generator base by 2.5.",
             cost: new Decimal(500)
         },
@@ -92,8 +92,13 @@ addLayer("a", {
             },
             display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T1 alpha generators generating " + format(this.effect()) + " alpha power every second.<br>Your next T1 alpha generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " alpha." },
             effect() {
-                if (hasUpgrade(this.layer, 12)) { return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(1.2) }
-                return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id])
+                let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id])
+                if (hasUpgrade(this.layer, 12)) { effect = effect.mul(1.2) }
+                effect = effect.mul(player.g.power.div(5).add(1))
+                if (hasUpgrade('g', 11)) { effect = effect.mul(1.5) }
+                effect = effect.mul(player.z.power.div(10).add(1))
+                if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                return effect
             },
             buy() {
                 player[this.layer].points = player[this.layer].points.sub(this.cost())
@@ -108,8 +113,13 @@ addLayer("a", {
             cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(5).pow(x.div(3).floor()).mul(5) },
             display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T2 alpha generators generating " + format(this.effect()) + " T1 alpha generators every second.<br>Your next T2 alpha generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " alpha." },
             effect() {
-                if (hasUpgrade(this.layer, 22)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(1.5).div(10)
-                return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(10)
+                let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(10)
+                if (hasUpgrade(this.layer, 22)) { effect = effect.mul(1.5) }
+                effect = effect.mul(player.g.power.div(5).add(1))
+                if (hasUpgrade('g', 11)) { effect = effect.mul(1.5) }
+                effect = effect.mul(player.z.power.div(10).add(1))
+                if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                return effect
             },
             buy() {
                 player[this.layer].points = player[this.layer].points.sub(this.cost())
@@ -125,8 +135,13 @@ addLayer("a", {
             cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(10).pow(x).mul(15) },
             display() { return "You have " + getBuyableAmount(this.layer, this.id) + " + " + format(player[this.layer].extraBuyables[this.id]) + " T3 alpha generators generating " + format(this.effect()) + " T2 alpha generators every second.<br>Your next T3 alpha generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " alpha." },
             effect() {
-                if (hasUpgrade(this.layer, 31)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(2).div(100)
-                return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(100)
+                let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(100)
+                if (hasUpgrade(this.layer, 31)) { effect = effect.mul(2) }
+                effect = effect.mul(player.g.power.div(5).add(1))
+                if (hasUpgrade('g', 11)) { effect = effect.mul(1.5) }
+                effect = effect.mul(player.z.power.div(10).add(1))
+                if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                return effect
             },
             buy() {
                 player[this.layer].points = player[this.layer].points.sub(this.cost())
@@ -142,8 +157,13 @@ addLayer("a", {
             cost(x) { if (x === undefined) x = getBuyableAmount(this.layer, this.id); return new Decimal(25).pow(x).mul(50) },
             display() { return "You have " + getBuyableAmount(this.layer, this.id) + " T4 alpha generators generating " + format(this.effect()) + " T3 alpha generators every second.<br>Your next T4 alpha generator will cost " + format(this.cost(getBuyableAmount(this.layer, this.id))) + " alpha." },
             effect() {
-                if (hasUpgrade(this.layer, 32)) return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).mul(2.5).div(1000)
-                return getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(1000)
+                let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(1000)
+                if (hasUpgrade(this.layer, 31)) { effect = effect.mul(2.5) }
+                effect = effect.mul(player.g.power.div(5).add(1))
+                if (hasUpgrade('g', 11)) { effect = effect.mul(1.5) }
+                effect = effect.mul(player.z.power.div(10).add(1))
+                if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                return effect
             },
             buy() {
                 player[this.layer].points = player[this.layer].points.sub(this.cost())

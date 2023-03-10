@@ -3,7 +3,7 @@ let modInfo = {
 	id: "omega",
 	author: "Nif",
 	pointsName: "points",
-	modFiles: ["layers/alpha.js", "layers/beta.js", "layers/gamma.js", "tree.js"],
+	modFiles: ["layers/alpha.js", "layers/beta.js", "layers/gamma.js", "layers/delta.js", "layers/epsilon.js", "layers/zeta.js", "layers_2/aleph.js","tree.js"],
 
 	discordName: "",
 	discordLink: "",
@@ -18,6 +18,8 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.2</h3><br>
+		- Added layers δ and ζ.<br>- Added placeholders for ε and א.<br>- Fixed some jank with some upgrades.
 	<h3>v0.1</h3><br>
 		- Added layers α, β, and γ.<br>`
 
@@ -43,7 +45,7 @@ function getPointGen() {
 
 	let gain = player.a.power.div(5)
 	if (hasUpgrade('a', 11)) gain = gain.mul(1.1)
-	gain = gain.mul(player.b.power.add(1))
+	gain = gain.mul(player.b.power.div(5).add(1))
 	if (hasUpgrade('b', 11)) gain = gain.mul(1.5)
 	return gain
 }
