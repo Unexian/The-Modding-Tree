@@ -21,7 +21,7 @@ addLayer("b", {
         "prestige-button",
         "resource-display",
         ["display-text", function () {
-            if (hasUpgrade(this.layer, 11)) return "You have " + format(player[this.layer].power) + " beta power, equating to " + format(player[this.layer].power.div(5).mul(1.5)) + " beta gained per second."
+            if (hasUpgrade(this.layer, 11)) return "You have " + format(player[this.layer].power) + " beta power, equating to " + format(player[this.layer].power.div(5).mul(1.5)) + "x points gained per second."
             return "You have " + format(player[this.layer].power) + " beta power, equating to " + format(player[this.layer].power.div(5).add(1)) + "x points gained per second."
         }],
         "blank",
