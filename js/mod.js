@@ -19,7 +19,7 @@ let VERSION = {
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.3</h3><br>
-		- Added layer ε.<br>- Removed layer א.<br>Fixed more bugs.<br>Starting epsilon challenge 1 is not reccomended as of yet.
+		- Added layer ε.<br>- Removed layer א.<br>Fixed more bugs.
 	<h3>v0.2</h3><br>
 		- Added layers δ and ζ.<br>- Added placeholders for ε and א.<br>- Fixed some jank with some upgrades.
 	<h3>v0.1</h3><br>

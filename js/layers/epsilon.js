@@ -42,7 +42,7 @@ addLayer("e", {
             canComplete: function() {return player.points.gte(new Decimal("1e25"))},
             onEnter() {
                 doReset(this.layer)
-                player[this.layer].points = 0
+                player[this.layer].points = new Decimal(0)
             },
             unlocked() { return player[this.layer].unlocked }
         }
