@@ -37,9 +37,9 @@ addLayer("e", {
         11: {
             name: "Epsilon challenge 1",
             challengeDescription: "Rows 1 and 2 are reset. Row 3 has no effect. Total point gain is raised to the power of 0.75.",
-            goalDescription: "Reach ε.",
+            goalDescription: "Reach 1e25 points.",
             rewardDescription: "Total point gain is squared if less than 1/s.",
-            canComplete: function() {return player[this.layer].points.gte(1)},
+            canComplete: function() {return player.points.gte(new Decimal("1e25"))},
             onEnter() {
                 doReset(this.layer)
                 player[this.layer].points = new Decimal(0)
