@@ -4,9 +4,10 @@ addLayer("g", {
     position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() {
         return {
-            unlocked: true,
+            unlocked: false,
             points: new Decimal(0),
             power: new Decimal(0),
+            unlockOrder: new Decimal(0),
             extraBuyables: {
                 11: new Decimal(0),
                 12: new Decimal(0),
@@ -14,6 +15,7 @@ addLayer("g", {
             }
         }
     },
+    increaseUnlockOrder: ['b'],
     tabFormat: [
         "main-display",
         "prestige-button",
@@ -30,7 +32,7 @@ addLayer("g", {
     ],
     color: "#949966",
     requires() {
-        if (hasUpgrade(this.layer, 12)) return new Decimal(7500)
+        if (hasUpgrade(this.layer, 12)) return new Decimal(500)
         return new Decimal(1000)
     }, // Can be a function that takes requirement increases into account
     resource: "gamma", // Name of prestige currency
@@ -50,7 +52,11 @@ addLayer("g", {
     hotkeys: [
         {key: "g", description: "G: Do a γ reset.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){
+        if (this.baseAmount().gte(800)) return true
+        if (player[this.layer].points.gte(1)) player[this.layer].unlocked = true
+        return player[this.layer].unlocked
+    },
     upgrades: {
         11: {
             title: "Gamma upgrade 1",

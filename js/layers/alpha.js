@@ -96,8 +96,10 @@ addLayer("a", {
                 if (hasUpgrade(this.layer, 12)) { effect = effect.mul(1.2) }
                 effect = effect.mul(player.g.power.div(5).add(1))
                 if (hasUpgrade('g', 11)) { effect = effect.mul(1.5) }
-                effect = effect.mul(player.z.power.div(10).add(1))
-                if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                if (!inChallenge('e', 11)) {
+                    effect = effect.mul(player.z.power.div(10).add(1))
+                    if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                }
                 return effect
             },
             buy() {
@@ -117,8 +119,10 @@ addLayer("a", {
                 if (hasUpgrade(this.layer, 22)) { effect = effect.mul(1.5) }
                 effect = effect.mul(player.g.power.div(5).add(1))
                 if (hasUpgrade('g', 11)) { effect = effect.mul(1.5) }
-                effect = effect.mul(player.z.power.div(10).add(1))
-                if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                if (!inChallenge('e', 11)) {
+                    effect = effect.mul(player.z.power.div(10).add(1))
+                    if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                }
                 return effect
             },
             buy() {
@@ -139,8 +143,10 @@ addLayer("a", {
                 if (hasUpgrade(this.layer, 31)) { effect = effect.mul(2) }
                 effect = effect.mul(player.g.power.div(5).add(1))
                 if (hasUpgrade('g', 11)) { effect = effect.mul(1.5) }
-                effect = effect.mul(player.z.power.div(10).add(1))
-                if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                if (!inChallenge('e', 11)) {
+                    effect = effect.mul(player.z.power.div(10).add(1))
+                    if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                }
                 return effect
             },
             buy() {
@@ -161,8 +167,10 @@ addLayer("a", {
                 if (hasUpgrade(this.layer, 31)) { effect = effect.mul(2.5) }
                 effect = effect.mul(player.g.power.div(5).add(1))
                 if (hasUpgrade('g', 11)) { effect = effect.mul(1.5) }
-                effect = effect.mul(player.z.power.div(10).add(1))
-                if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                if (!inChallenge('e', 11)) {
+                    effect = effect.mul(player.z.power.div(10).add(1))
+                    if (hasUpgrade('z', 11)) { effect = effect.mul(2) }
+                }
                 return effect
             },
             buy() {

@@ -1,26 +1,20 @@
 addLayer("e", {
     name: "epsilon", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "ε", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 3, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    position: 1, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() {
         return {
-            unlocked: true,
+            unlocked: false,
             points: new Decimal(0),
+            unlockOrder: new Decimal(0),
         }
     },
-    tabFormat: [
-        "main-display",
-        "prestige-button",
-        "resource-display",
-
-        ["display-text", "This layer is not implemented yet. It's coming, though!"]
-    ],
     color: "#4db361",
-    requires() {return new Decimal(Number.POSITIVE_INFINITY)},
+    requires() {return new Decimal("1e25")},
     resource: "epsilon", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
-    baseAmount() {return player.b.power}, // Get the current amount of baseResource
-    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
@@ -34,5 +28,23 @@ addLayer("e", {
     hotkeys: [
         {key: "e", description: "E: Do a ε reset.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){
+        if (this.baseAmount().gte(new Decimal("1e20"))) return true
+        if (player[this.layer].points.gte(1)) player[this.layer].unlocked = true
+        return player[this.layer].unlocked
+    },
+    challenges: {
+        11: {
+            name: "Epsilon challenge 1",
+            challengeDescription: "Rows 1 and 2 are reset. Row 3 has no effect. Total point gain is raised to the power of 0.75.",
+            goalDescription: "Reach 1e25 points",
+            rewardDescription: "Total point gain is squared if less than 1/s.",
+            canComplete: function() {return player.points.gte(new Decimal("1e25"))},
+            onEnter() {
+                doReset(this.layer)
+                player[this.layer].points = 0
+            },
+            unlocked() { return player[this.layer].unlocked }
+        }
+    }
 })

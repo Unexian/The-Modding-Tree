@@ -1,12 +1,13 @@
 addLayer("z", {
     name: "zeta", // This is optional, only used in a few places, If absent it just uses the layer id.
     symbol: "ζ", // This appears on the layer's node. Default is the id with the first letter capitalized
-    position: 4, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    position: 2, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() {
         return {
-            unlocked: true,
+            unlocked: false,
             points: new Decimal(0),
             power: new Decimal(0),
+            unlockOrder: new Decimal(0),
             extraBuyables: {
                 11: new Decimal(0),
                 12: new Decimal(0),
@@ -30,14 +31,14 @@ addLayer("z", {
     ],
     color: "#40bf9f",
     requires() {
-        if (hasUpgrade(this.layer, 12)) return new Decimal("5e4")
-        return new Decimal("1e5")
+        if (hasUpgrade(this.layer, 12)) return new Decimal("5e5")
+        return new Decimal("1e6")
     }, // Can be a function that takes requirement increases into account
     resource: "zeta", // Name of prestige currency
     baseResource: "gamma", // Name of resource prestige is based on
     baseAmount() {return player.g.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent: 0.3, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -50,7 +51,11 @@ addLayer("z", {
     hotkeys: [
         {key: "z", description: "Z: Do a ζ reset.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){
+        if (this.baseAmount().gte(new Decimal("8e5"))) return true
+        if (player[this.layer].points.gte(1)) player[this.layer].unlocked = true
+        return player[this.layer].unlocked
+    },
     upgrades: {
         11: {
             title: "Zeta upgrade 1",

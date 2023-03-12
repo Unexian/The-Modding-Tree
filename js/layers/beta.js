@@ -4,9 +4,10 @@ addLayer("b", {
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() {
         return {
-            unlocked: true,
+            unlocked: false,
             points: new Decimal(0),
             power: new Decimal(0),
+            unlockOrder: new Decimal(0),
             extraBuyables: {
                 11: new Decimal(0),
                 12: new Decimal(0),
@@ -14,6 +15,7 @@ addLayer("b", {
             }
         }
     },
+    increaseUnlockOrder: ['g'],
     tabFormat: [
         "main-display",
         "prestige-button",
@@ -37,7 +39,7 @@ addLayer("b", {
     baseResource: "alpha power", // Name of resource prestige is based on
     baseAmount() {return player.a.power}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent: 0.3, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -50,7 +52,11 @@ addLayer("b", {
     hotkeys: [
         {key: "b", description: "B: Do a β reset.", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true},
+    layerShown(){
+        if (this.baseAmount().gte(8000)) return true
+        if (player[this.layer].points.gte(1)) player[this.layer].unlocked = true
+        return player[this.layer].unlocked
+    },
     upgrades: {
         11: {
             title: "Beta upgrade 1",
@@ -91,8 +97,10 @@ addLayer("b", {
             effect() {
                 let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id])
                 if (hasUpgrade(this.layer, 12)) { effect = effect.mul(1.5) }
-                effect = effect.mul(player.d.power.div(10).add(1))
-                if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
+                if (!inChallenge('e', 11)) {
+                    effect = effect.mul(player.d.power.div(10).add(1))
+                    if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
+                }
                 return effect
             },
             buy() {
@@ -110,8 +118,10 @@ addLayer("b", {
             effect() {
                 let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(10)
                 if (hasUpgrade(this.layer, 22)) { effect = effect.mul(2) }
-                effect = effect.mul(player.d.power.div(10).add(1))
-                if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
+                if (!inChallenge('e', 11)) {
+                    effect = effect.mul(player.d.power.div(10).add(1))
+                    if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
+                }
                 return effect
             },
             buy() {
@@ -130,8 +140,10 @@ addLayer("b", {
             effect() {
                 let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(100)
                 if (hasUpgrade(this.layer, 31)) { effect = effect.mul(5) }
-                effect = effect.mul(player.d.power.div(10).add(1))
-                if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
+                if (!inChallenge('e', 11)) {
+                    effect = effect.mul(player.d.power.div(10).add(1))
+                    if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
+                }
                 return effect
             },
             buy() {
@@ -150,8 +162,10 @@ addLayer("b", {
             effect() {
                 let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(1000)
                 if (hasUpgrade(this.layer, 32)) { effect = effect.mul(10) }
-                effect = effect.mul(player.d.power.div(10).add(1))
-                if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
+                if (!inChallenge('e', 11)) {
+                    effect = effect.mul(player.d.power.div(10).add(1))
+                    if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
+                }
                 return effect
             },
             buy() {

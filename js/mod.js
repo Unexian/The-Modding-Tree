@@ -3,21 +3,23 @@ let modInfo = {
 	id: "omega",
 	author: "Nif",
 	pointsName: "points",
-	modFiles: ["layers/alpha.js", "layers/beta.js", "layers/gamma.js", "layers/delta.js", "layers/epsilon.js", "layers/zeta.js", "layers_2/aleph.js","tree.js"],
+	modFiles: ["layers/alpha.js", "layers/beta.js", "layers/gamma.js", "layers/delta.js", "layers/epsilon.js", "layers/zeta.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (0), // Used for hard resets and new players
-	offlineLimit: 1,  // In hours
+	offlineLimit: 200,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.1",
-	name: "The second row",
+	num: "0.3",
+	name: "Epsilon and fixed",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.3</h3><br>
+		- Added layer ε.<br>- Removed layer א.<br>Fixed more bugs.<br>Starting epsilon challenge 1 is not reccomended as of yet.
 	<h3>v0.2</h3><br>
 		- Added layers δ and ζ.<br>- Added placeholders for ε and א.<br>- Fixed some jank with some upgrades.
 	<h3>v0.1</h3><br>
@@ -43,10 +45,12 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = player.a.power.div(5)
+	let gain = player.a.power.div(2)
 	if (hasUpgrade('a', 11)) gain = gain.mul(1.1)
 	gain = gain.mul(player.b.power.div(5).add(1))
 	if (hasUpgrade('b', 11)) gain = gain.mul(1.5)
+	if (inChallenge('e', 11)) gain = gain.pow(0.75)
+	else if (hasChallenge('e', 11) && gain.gte(1)) gain = gain.pow(2)
 	return gain
 }
 
@@ -60,7 +64,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return (getBuyableAmount('g', 22) >= 1) || (getBuyableAmount('b', 22) >= 1)
+	return (getBuyableAmount('d', 22) >= 1) || (getBuyableAmount('z', 22) >= 1)
 }
 
 
