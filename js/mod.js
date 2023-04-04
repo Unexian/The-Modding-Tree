@@ -19,11 +19,11 @@ let VERSION = {
 
 let changelog = `<h1>Changelog:</h1><br>
 	<h3>v0.4</h3><br>
-		- Completely overhauled layer ε.<br>- Added milestones.<br>- Did some rebalancing.<br>- Challenges will be on layer θ.
+		- Completely overhauled layer ε.<br>- Added milestones.<br>- Did some rebalancing.<br>- Challenges will be on layer θ.<br>
 	<h3>v0.3</h3><br>
-		- Added layer ε.<br>- Removed layer א.<br>Fixed more bugs.
+		- Added layer ε.<br>- Removed layer א.<br>Fixed more bugs.<br>
 	<h3>v0.2</h3><br>
-		- Added layers δ and ζ.<br>- Added placeholders for ε and א.<br>- Fixed some jank with some upgrades.
+		- Added layers δ and ζ.<br>- Added placeholders for ε and א.<br>- Fixed some jank with some upgrades.<br>
 	<h3>v0.1</h3><br>
 		- Added layers α, β, and γ.<br>`
 
