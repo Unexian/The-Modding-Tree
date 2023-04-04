@@ -24,6 +24,7 @@ addLayer("z", {
             return "You have " + format(player[this.layer].power) + " zeta power, equating to a " + format(player[this.layer].power.div(10).add(1)) + "x multiplier to gamma power effect."
         }],
         "blank",
+        "milestones",
         ["row", [
             "buyables",
             "upgrades"
@@ -31,8 +32,8 @@ addLayer("z", {
     ],
     color: "#40bf9f",
     requires() {
-        if (hasUpgrade(this.layer, 12)) return new Decimal("5e5")
-        return new Decimal("1e6")
+        if (hasUpgrade(this.layer, 12)) return new Decimal("5e3")
+        return new Decimal("1e4")
     }, // Can be a function that takes requirement increases into account
     resource: "zeta", // Name of prestige currency
     baseResource: "gamma", // Name of resource prestige is based on
@@ -55,6 +56,33 @@ addLayer("z", {
         if (this.baseAmount().gte(new Decimal("8e5"))) return true
         if (player[this.layer].points.gte(1)) player[this.layer].unlocked = true
         return player[this.layer].unlocked
+    },
+    milestones: {
+        0: {
+            requirementDescription: "3 zeta",
+            effectDescription: "Delta resets don't reset beta or gamma milestones",
+            done() { return player[this.layer].points.gte(3) }
+        },
+        1: {
+            requirementDescription: "15 zeta",
+            effectDescription: "Zeta resets don't reset alpha",
+            done() { return player[this.layer].points.gte(15) }
+        },
+        2: {
+            requirementDescription: "100 zeta",
+            effectDescription: "Zeta resets don't reset beta or gamma generators",
+            done() { return player[this.layer].points.gte(100) }
+        },
+        3: {
+            requirementDescription: "2500 zeta",
+            effectDescription: "Zeta resets don't reset beta or gamma upgrades",
+            done() { return player[this.layer].points.gte(2500) }
+        },
+        4: {
+            requirementDescription: "50000 zeta",
+            effectDescription: "Zeta resets don't reset beta or gamma extra buyables",
+            done() { return player[this.layer].points.gte(50000) }
+        }
     },
     upgrades: {
         11: {
@@ -162,9 +190,9 @@ addLayer("z", {
         },
     },
     update(delta) {
-        player[this.layer].power = player[this.layer].power.add(buyableEffect(this.layer, 11).mul(delta))
-        player[this.layer].extraBuyables[11] = player[this.layer].extraBuyables[11].add(buyableEffect(this.layer, 12).mul(delta))
-        player[this.layer].extraBuyables[12] = player[this.layer].extraBuyables[12].add(buyableEffect(this.layer, 21).mul(delta))
-        player[this.layer].extraBuyables[21] = player[this.layer].extraBuyables[21].add(buyableEffect(this.layer, 22).mul(delta))
+        player[this.layer].power = player[this.layer].power.add(buyableEffect(this.layer, 11).mul(buyableEffect('e', 33)).mul(delta))
+        player[this.layer].extraBuyables[11] = player[this.layer].extraBuyables[11].add(buyableEffect(this.layer, 12).mul(buyableEffect('e', 33)).mul(delta))
+        player[this.layer].extraBuyables[12] = player[this.layer].extraBuyables[12].add(buyableEffect(this.layer, 21).mul(buyableEffect('e', 33)).mul(delta))
+        player[this.layer].extraBuyables[21] = player[this.layer].extraBuyables[21].add(buyableEffect(this.layer, 22).mul(buyableEffect('e', 33)).mul(delta))
     }
 })

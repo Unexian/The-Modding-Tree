@@ -25,6 +25,7 @@ addLayer("b", {
             return "You have " + format(player[this.layer].power) + " beta power, equating to " + format(player[this.layer].power.div(5).add(1)) + "x points gained per second."
         }],
         "blank",
+        "milestones",
         ["row", [
             "buyables",
             "upgrades"
@@ -35,6 +36,24 @@ addLayer("b", {
         if (hasUpgrade(this.layer, 12)) return new Decimal(5000)
         return new Decimal(10000)
     }, // Can be a function that takes requirement increases into account
+    doReset(resettingLayer) {
+        if (layers[resettingLayer].row <= this.row) return
+        
+        let keep = []
+        if (resettingLayer == "d" && hasMilestone("d", 0)) {keep.push("milestones")}
+        if (resettingLayer == "d" && hasMilestone("d", 2)) {keep.push("buyables")}
+        if (resettingLayer == "d" && hasMilestone("d", 3)) {keep.push("upgrades")}
+        if (resettingLayer == "d" && hasMilestone("d", 4)) {keep.push("extraBuyables")}
+        if (resettingLayer == "e" && hasMilestone("e", 0)) {keep.push("milestones")}
+        if (resettingLayer == "e" && hasMilestone("e", 2)) {keep.push("buyables")}
+        if (resettingLayer == "e" && hasMilestone("e", 3)) {keep.push("upgrades")}
+        if (resettingLayer == "e" && hasMilestone("e", 4)) {keep.push("extraBuyables")}
+        if (resettingLayer == "z" && hasMilestone("z", 0)) {keep.push("milestones")}
+        if (resettingLayer == "z" && hasMilestone("z", 2)) {keep.push("buyables")}
+        if (resettingLayer == "z" && hasMilestone("z", 3)) {keep.push("upgrades")}
+        if (resettingLayer == "z" && hasMilestone("z", 4)) {keep.push("extraBuyables")}
+        layerDataReset(this.layer, keep)
+    },
     resource: "beta", // Name of prestige currency
     baseResource: "alpha power", // Name of resource prestige is based on
     baseAmount() {return player.a.power}, // Get the current amount of baseResource
@@ -56,6 +75,23 @@ addLayer("b", {
         if (this.baseAmount().gte(8000)) return true
         if (player[this.layer].points.gte(1)) player[this.layer].unlocked = true
         return player[this.layer].unlocked
+    },
+    milestones: {
+        0: {
+            requirementDescription: "10 beta",
+            effectDescription: "Beta resets don't reset alpha generators",
+            done() { return player[this.layer].points.gte(10) }
+        },
+        1: {
+            requirementDescription: "1000 beta",
+            effectDescription: "Beta resets don't reset alpha upgrades",
+            done() { return player[this.layer].points.gte(1000) }
+        },
+        2: {
+            requirementDescription: "100000 beta",
+            effectDescription: "Beta resets don't reset alpha extra buyables",
+            done() { return player[this.layer].points.gte(100000) }
+        }
     },
     upgrades: {
         11: {
@@ -97,10 +133,8 @@ addLayer("b", {
             effect() {
                 let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id])
                 if (hasUpgrade(this.layer, 12)) { effect = effect.mul(1.5) }
-                if (!inChallenge('e', 11)) {
-                    effect = effect.mul(player.d.power.div(10).add(1))
-                    if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
-                }
+                effect = effect.mul(player.d.power.div(10).add(1))
+                if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
                 return effect
             },
             buy() {
@@ -118,10 +152,8 @@ addLayer("b", {
             effect() {
                 let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(10)
                 if (hasUpgrade(this.layer, 22)) { effect = effect.mul(2) }
-                if (!inChallenge('e', 11)) {
-                    effect = effect.mul(player.d.power.div(10).add(1))
-                    if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
-                }
+                effect = effect.mul(player.d.power.div(10).add(1))
+                if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
                 return effect
             },
             buy() {
@@ -140,10 +172,8 @@ addLayer("b", {
             effect() {
                 let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(100)
                 if (hasUpgrade(this.layer, 31)) { effect = effect.mul(5) }
-                if (!inChallenge('e', 11)) {
-                    effect = effect.mul(player.d.power.div(10).add(1))
-                    if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
-                }
+                effect = effect.mul(player.d.power.div(10).add(1))
+                if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
                 return effect
             },
             buy() {
@@ -162,10 +192,8 @@ addLayer("b", {
             effect() {
                 let effect = getBuyableAmount(this.layer, this.id).add(player[this.layer].extraBuyables[this.id]).div(1000)
                 if (hasUpgrade(this.layer, 32)) { effect = effect.mul(10) }
-                if (!inChallenge('e', 11)) {
-                    effect = effect.mul(player.d.power.div(10).add(1))
-                    if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
-                }
+                effect = effect.mul(player.d.power.div(10).add(1))
+                if (hasUpgrade('d', 11)) { effect = effect.mul(2) }
                 return effect
             },
             buy() {
@@ -179,9 +207,9 @@ addLayer("b", {
         },
     },
     update(delta) {
-        player[this.layer].power = player[this.layer].power.add(buyableEffect(this.layer, 11).mul(delta))
-        player[this.layer].extraBuyables[11] = player[this.layer].extraBuyables[11].add(buyableEffect(this.layer, 12).mul(delta))
-        player[this.layer].extraBuyables[12] = player[this.layer].extraBuyables[12].add(buyableEffect(this.layer, 21).mul(delta))
-        player[this.layer].extraBuyables[21] = player[this.layer].extraBuyables[21].add(buyableEffect(this.layer, 22).mul(delta))
+        player[this.layer].power = player[this.layer].power.add(buyableEffect(this.layer, 11).mul(buyableEffect('e', 21)).mul(delta))
+        player[this.layer].extraBuyables[11] = player[this.layer].extraBuyables[11].add(buyableEffect(this.layer, 12).mul(buyableEffect('e', 21)).mul(buyableEffect('e', 31)).mul(delta))
+        player[this.layer].extraBuyables[12] = player[this.layer].extraBuyables[12].add(buyableEffect(this.layer, 21).mul(buyableEffect('e', 21)).mul(buyableEffect('e', 31)).mul(delta))
+        player[this.layer].extraBuyables[21] = player[this.layer].extraBuyables[21].add(buyableEffect(this.layer, 22).mul(buyableEffect('e', 21)).mul(buyableEffect('e', 31)).mul(delta))
     }
 })

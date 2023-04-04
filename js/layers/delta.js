@@ -24,6 +24,7 @@ addLayer("d", {
             return "You have " + format(player[this.layer].power) + " delta power, equating to a " + format(player[this.layer].power.div(10).add(1)) + "x multiplier to beta generator effect."
         }],
         "blank",
+        "milestones",
         ["row", [
             "buyables",
             "upgrades"
@@ -55,6 +56,33 @@ addLayer("d", {
         if (this.baseAmount().gte(new Decimal(800))) return true
         if (player[this.layer].points.gte(1)) player[this.layer].unlocked = true
         return player[this.layer].unlocked
+    },
+    milestones: {
+        0: {
+            requirementDescription: "3 delta",
+            effectDescription: "Delta resets don't reset beta or gamma milestones",
+            done() { return player[this.layer].points.gte(3) }
+        },
+        1: {
+            requirementDescription: "15 delta",
+            effectDescription: "Delta resets don't reset alpha",
+            done() { return player[this.layer].points.gte(15) }
+        },
+        2: {
+            requirementDescription: "100 delta",
+            effectDescription: "Delta resets don't reset beta or gamma generators",
+            done() { return player[this.layer].points.gte(100) }
+        },
+        3: {
+            requirementDescription: "2500 delta",
+            effectDescription: "Delta resets don't reset beta or gamma upgrades",
+            done() { return player[this.layer].points.gte(2500) }
+        },
+        4: {
+            requirementDescription: "50000 delta",
+            effectDescription: "Delta resets don't reset beta or gamma extra buyables",
+            done() { return player[this.layer].points.gte(50000) }
+        }
     },
     upgrades: {
         11: {
@@ -162,9 +190,9 @@ addLayer("d", {
         },
     },
     update(delta) {
-        player[this.layer].power = player[this.layer].power.add(buyableEffect(this.layer, 11).mul(delta))
-        player[this.layer].extraBuyables[11] = player[this.layer].extraBuyables[11].add(buyableEffect(this.layer, 12).mul(delta))
-        player[this.layer].extraBuyables[12] = player[this.layer].extraBuyables[12].add(buyableEffect(this.layer, 21).mul(delta))
-        player[this.layer].extraBuyables[21] = player[this.layer].extraBuyables[21].add(buyableEffect(this.layer, 22).mul(delta))
+        player[this.layer].power = player[this.layer].power.add(buyableEffect(this.layer, 11).mul(buyableEffect('e', 31)).mul(delta))
+        player[this.layer].extraBuyables[11] = player[this.layer].extraBuyables[11].add(buyableEffect(this.layer, 12).mul(buyableEffect('e', 31)).mul(delta))
+        player[this.layer].extraBuyables[12] = player[this.layer].extraBuyables[12].add(buyableEffect(this.layer, 21).mul(buyableEffect('e', 31)).mul(delta))
+        player[this.layer].extraBuyables[21] = player[this.layer].extraBuyables[21].add(buyableEffect(this.layer, 22).mul(buyableEffect('e', 31)).mul(delta))
     }
 })

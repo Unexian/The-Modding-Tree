@@ -13,11 +13,13 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.3",
-	name: "Epsilon and fixed",
+	num: "0.4",
+	name: "Epsilon... upgrades?",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.4</h3><br>
+		- Completely overhauled layer ε.<br>- Did some rebalancing.<br>- Challenges will be on layer θ.
 	<h3>v0.3</h3><br>
 		- Added layer ε.<br>- Removed layer א.<br>Fixed more bugs.
 	<h3>v0.2</h3><br>
@@ -47,10 +49,10 @@ function getPointGen() {
 
 	let gain = player.a.power.div(2)
 	if (hasUpgrade('a', 11)) gain = gain.mul(1.1)
+	gain = gain.mul(buyableEffect('e', 11))
 	gain = gain.mul(player.b.power.div(5).add(1))
 	if (hasUpgrade('b', 11)) gain = gain.mul(1.5)
-	if (inChallenge('e', 11)) gain = gain.pow(0.75)
-	else if (hasChallenge('e', 11) && gain.gte(1)) gain = gain.pow(2)
+	gain = gain.mul(buyableEffect('e', 21))
 	return gain
 }
 

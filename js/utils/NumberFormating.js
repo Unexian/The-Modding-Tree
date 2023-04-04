@@ -69,7 +69,6 @@ function format(decimal, precision = 2, small) {
     }
     else   
         return format(decimal, precision) + "⁻¹"
-
 }
 
 function formatWhole(decimal) {
