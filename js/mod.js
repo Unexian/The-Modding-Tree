@@ -18,6 +18,8 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.4a</h3><br>
+		- Rebalanced layer ε.<br>- Removed endgame<br>
 	<h3>v0.4</h3><br>
 		- Completely overhauled layer ε.<br>- Added milestones.<br>- Did some rebalancing.<br>- Challenges will be on layer θ.<br>
 	<h3>v0.3</h3><br>
@@ -66,7 +68,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return (getBuyableAmount('d', 22) >= 1) || (getBuyableAmount('z', 22) >= 1)
+	return false
 }
 
 
