@@ -1,26 +1,27 @@
 let modInfo = {
-	name: "The ??? Tree",
-	id: "mymod",
-	author: "nobody",
-	pointsName: "points",
-	modFiles: ["layers.js", "tree.js"],
+	name: "The numerical Tree",
+	id: "+*^",
+	author: "Nif",
+	pointsName: "increments",
+	modFiles: ["layers/additive.js", "layers/multiplicative.js", "layers/exponentiative.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
+	initialStartPoints: new Decimal (5), // Used for hard resets and new players
 	offlineLimit: 1,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
-	name: "Literally nothing",
+	num: "0.1",
+	name: "Incrementing increments of increments",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
-		- Added things.<br>
-		- Added stuff.`
+	<h3>v0.1</h3><br>
+		- Added additive, multiplicative, and exponentiative.<br>
+		- Added additive upgrades and exponentiative challenges.<br>
+		- Did some rebalancing.`
 
 let winText = `Congratulations! You have reached the end and beaten this game, but for now...`
 
@@ -42,7 +43,12 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(1)
+	let gain = buyableEffect("+", 11)
+	gain = gain.mul(upgradeEffect("+", 11))
+	gain = gain.mul(buyableEffect("*", 11))
+	gain = gain.pow(buyableEffect("^", 11))
+
+	if (inChallenge("^", 11)) {gain = gain.add(1).log(player["^"].resetTime.add(1).log10().add(2))}
 	return gain
 }
 
@@ -56,7 +62,7 @@ var displayThings = [
 
 // Determines when the game "ends"
 function isEndgame() {
-	return player.points.gte(new Decimal("e280000000"))
+	return hasMilestone("^", 6)
 }
 
 
