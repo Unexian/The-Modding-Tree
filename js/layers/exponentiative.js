@@ -12,6 +12,10 @@ addLayer("^", {
         player[this.layer].resets = player[this.layer].resets.add(1)
         player[this.layer].milestones = [2]
     },
+    doReset(resettingLayer) {
+        if (tmp[resettingLayer].row == tmp[this.layer].row) return
+        layerDataReset(this.layer, ["milestones"])
+    },
     color: "#a37c17",
     requires: new Decimal(1000000), // Can be a function that takes requirement increases into account
     resource: "exponentiative points", // Name of prestige currency

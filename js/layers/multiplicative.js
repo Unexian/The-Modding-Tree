@@ -14,8 +14,7 @@ addLayer("*", {
     },
     doReset(resettingLayer) {
         if (tmp[resettingLayer].row == tmp[this.layer].row) return
-        layerDataReset(this.layer)
-        player[this.layer].milestones = [4]
+        layerDataReset(this.layer, ["milestones"])
         if (hasMilestone("^", 1)) {addBuyables(this.layer, 11, 2)}
     },
     effect() {
