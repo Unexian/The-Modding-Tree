@@ -127,7 +127,7 @@ addLayer("*", {
             effectDisplay() {
                 return this.effect().toString() + "% of additive reset per second"
             },
-            unlocked() {return hasMilestone(this.layer, 3)}
+            unlocked() {return hasMilestone(this.layer, 2)}
         },
     },
     layerShown(){return hasMilestone("+", 2)}
