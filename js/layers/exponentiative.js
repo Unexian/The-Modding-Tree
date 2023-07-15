@@ -19,7 +19,7 @@ addLayer("^", {
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
     exponent: 0.8, // Prestige currency exponent
-    base: 10000,
+    base: 1000000,
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -135,7 +135,8 @@ addLayer("^", {
             goalDescription: "1e6 increments",
             canComplete() {player.points.gte("1e6")},
             rewardDescription: "All buyables are 3x stronger",
-            unlocked() {return hasMilestone(this.layer, 6)}
+            unlocked() {return hasMilestone(this.layer, 6)},
+            tooltip: "Formula: x=logp<sub>logp(t)+2</sub>(x)"
         },
     },
     layerShown(){return hasMilestone("*", 4)}

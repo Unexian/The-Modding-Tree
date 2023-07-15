@@ -18,13 +18,19 @@ addLayer("*", {
         player[this.layer].milestones = [4]
         if (hasMilestone("^", 1)) {addBuyables(this.layer, 11, 2)}
     },
+    effect() {
+        return player[this.layer].points.div(10).add(1)
+    },
+    effectDescription() {
+        return "boosting additive point gain by " + this.effect().toString() + "x"
+    },
     color: "#a933e0",
-    requires: new Decimal(100), // Can be a function that takes requirement increases into account
+    requires: new Decimal(1000), // Can be a function that takes requirement increases into account
     resource: "multiplicative points", // Name of prestige currency
     baseResource: "increments", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent: 0.25, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult

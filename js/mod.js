@@ -18,6 +18,10 @@ let VERSION = {
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+	<h3>v0.2</h3><br>
+		- Added multiplicative layer effect.<br>
+		- Did some more rebalancing.<br>
+		- I have not reached exponentiative.<br>
 	<h3>v0.1</h3><br>
 		- Added additive, multiplicative, and exponentiative.<br>
 		- Added additive upgrades and exponentiative challenges.<br>
@@ -44,7 +48,7 @@ function getPointGen() {
 		return new Decimal(0)
 
 	let gain = buyableEffect("+", 11)
-	gain = gain.mul(upgradeEffect("+", 11))
+	gain = gain.mul(upgradeEffect("+", 13))
 	gain = gain.mul(buyableEffect("*", 11))
 	gain = gain.pow(buyableEffect("^", 11))
 

@@ -22,6 +22,7 @@ addLayer("+", {
     exponent: 0.5, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        mult.mul(tmp["*"].effect)
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -46,9 +47,9 @@ addLayer("+", {
             done() {return getBuyableAmount(this.layer, 11).gte(5)}
         },
         2: {
-            requirementDescription: "20 additive boosts",
+            requirementDescription: "35 additive boosts",
             effectDescription: "Unlock a new layer",
-            done() {return getBuyableAmount(this.layer, 11).gte(20)}
+            done() {return getBuyableAmount(this.layer, 11).gte(35)}
         },
     },
     buyables: {
@@ -77,7 +78,7 @@ addLayer("+", {
                 player[this.layer].points = player[this.layer].points.sub(this.cost(getBuyableAmount(this.layer, 11).sub(1)))
             },
             effect() {
-                return getBuyableAmount(this.layer, 11).mul(hasChallenge("^", 11) ? 3 : 1)
+                return getBuyableAmount(this.layer, 11).mul(upgradeEffect("+", 11)).mul(hasChallenge("^", 11) ? 3 : 1)
             },
             effectDisplay() {
                 return this.effect().toString() + " points per second"
@@ -90,13 +91,21 @@ addLayer("+", {
             description: "Boost additive boosts 2x",
             cost: 3,
             unlocked() { return hasMilestone(this.layer, 1) },
-            effect() { return hasUpgrade(this.layer, 11) ? 2 : 1 }
+            effect() { return hasUpgrade(this.layer, this.id) ? 2 : 1 }
         },
         12: {
             title: "Descaling",
             description: "Multiply additive boost costs by 2/3, rounded down",
             cost: 10,
             unlocked() { return hasUpgrade(this.layer, 11) }
+        },
+        13: {
+            title: "Self-boosting",
+            description: "Increments boost themselves",
+            cost: 20,
+            unlocked() { return hasUpgrade(this.layer, 12) },
+            effect() { return hasUpgrade(this.layer, this.id) ? player.points.add(1).log(1000).add(1) : 1 },
+            tooltip: "Formula: x=x(logp<sub>1000</sub>(x)+1)"
         },
     },
     layerShown(){return true}
