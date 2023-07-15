@@ -112,7 +112,7 @@ addLayer("*", {
                     + this.effectDisplay()
             },
             cost(x = getBuyableAmount(this.layer, 12)) {
-                return Decimal.pow(3, x).mul(9).round()
+                return Decimal.pow(3, x).mul(3).round()
             },
             canAfford() {
                 return player[this.layer].points.gte(this.cost(getBuyableAmount(this.layer, 12)))
