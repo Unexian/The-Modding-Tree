@@ -122,7 +122,7 @@ addLayer("*", {
                 player[this.layer].points = player[this.layer].points.sub(this.cost(getBuyableAmount(this.layer, 12).sub(1)))
             },
             effect() {
-                return getBuyableAmount(this.layer, 12).mul(2).mul(hasChallenge("^", 11) ? 3 : 1)
+                return getBuyableAmount(this.layer, 12).mul(5).mul(hasChallenge("^", 11) ? 3 : 1)
             },
             effectDisplay() {
                 return this.effect().toString() + "% of additive reset per second"
