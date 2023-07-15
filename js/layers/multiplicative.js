@@ -62,15 +62,15 @@ addLayer("*", {
             done() {return player[this.layer].resets.gte(10)}
         },
         3: {
-            requirementDescription: "25 multiplicative boosts",
+            requirementDescription: "5 multiplicative boosts",
             effectDescription: "Auto-buy additive boosts",
-            done() {return getBuyableAmount(this.layer, 11).gte(25)},
+            done() {return getBuyableAmount(this.layer, 11).gte(5)},
             toggles: ["+", "auto"]
         },
         4: {
-            requirementDescription: "100 multiplicative boosts",
+            requirementDescription: "10 multiplicative boosts",
             effectDescription: "Unlock a new layer",
-            done() {return getBuyableAmount(this.layer, 11).gte(100)}
+            done() {return getBuyableAmount(this.layer, 11).gte(10)}
         },
     },
     buyables: {
