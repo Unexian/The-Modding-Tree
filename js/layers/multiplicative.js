@@ -65,7 +65,7 @@ addLayer("*", {
             requirementDescription: "5 multiplicative boosts",
             effectDescription: "Auto-buy additive boosts",
             done() {return getBuyableAmount(this.layer, 11).gte(5)},
-            toggles: ["+", "auto"]
+            toggles: [["+", "auto"]]
         },
         4: {
             requirementDescription: "10 multiplicative boosts",

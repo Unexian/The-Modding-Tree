@@ -17,7 +17,7 @@ addLayer("^", {
         layerDataReset(this.layer, ["milestones"])
     },
     color: "#a37c17",
-    requires: new Decimal(1000000), // Can be a function that takes requirement increases into account
+    requires: new Decimal(25000), // Can be a function that takes requirement increases into account
     resource: "exponentiative points", // Name of prestige currency
     baseResource: "increments", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource

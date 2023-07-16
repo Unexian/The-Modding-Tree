@@ -9,7 +9,7 @@ addLayer("+", {
     }},
     doReset(resettingLayer) {
         if (tmp[resettingLayer].row == tmp[this.layer].row) return
-        layerDataReset(this.layer, ["milestones"])
+        layerDataReset(this.layer, ["milestones", "auto"])
         if (hasMilestone("*", 1)) {addBuyables(this.layer, 11, 1)}
     },
     color: "#4BDC13",
@@ -35,8 +35,8 @@ addLayer("+", {
         {key: "a", description: "a: Reset for additive points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
     automate() {
-        if (hasMilestone("*", 3) && player[this.layer].auto && tmp[this.layer].buyables[11].canAfford()) {
-            tmp[this.layer].buyables[11].buy()
+        if (hasMilestone("*", 3) && player[this.layer].auto) {
+            buyBuyable('+', 11)
         }
     },
     milestones: {
@@ -70,11 +70,11 @@ addLayer("+", {
                 }
             },
             canAfford() {
-                return player[this.layer].points.gte(this.cost(getBuyableAmount(this.layer, 11)))
+                return player[this.layer].points.gte(this.cost)
             },
             buy() {
-                addBuyables(this.layer, 11, 1)
                 player[this.layer].points = player[this.layer].points.sub(this.cost(getBuyableAmount(this.layer, 11).sub(1)))
+                addBuyables(this.layer, 11, 1)
             },
             effect() {
                 return getBuyableAmount(this.layer, 11).mul(upgradeEffect("+", 11)).mul(hasChallenge("^", 11) ? 3 : 1)
