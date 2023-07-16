@@ -23,7 +23,6 @@ let changelog = `<h1>Changelog:</h1><br>
 		- Did some more rebalancing.<br>
 		- Milestones never reset.<br>
 		- Numerous hotfixes.<br>
-		- I have not reached exponentiative.<br>
 	<h3>v0.1</h3><br>
 		- Added additive, multiplicative, and exponentiative.<br>
 		- Added additive upgrades and exponentiative challenges.<br>

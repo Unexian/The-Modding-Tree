@@ -17,13 +17,13 @@ addLayer("^", {
         layerDataReset(this.layer, ["milestones"])
     },
     color: "#a37c17",
-    requires: new Decimal(25000), // Can be a function that takes requirement increases into account
+    requires: new Decimal(1000), // Can be a function that takes requirement increases into account
     resource: "exponentiative points", // Name of prestige currency
     baseResource: "increments", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "static", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.8, // Prestige currency exponent
-    base: 1000000,
+    exponent: 0.5, // Prestige currency exponent
+    base: 25000,
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
         return mult
@@ -44,7 +44,7 @@ addLayer("^", {
         },
         2: {
             requirementDescription: "5 exponentiative resets",
-            effectDescription: "Unlock multiplicative power generation",
+            effectDescription: "Unlock multiplicative point generation",
             done() {return player[this.layer].resets.gte(5)}
         },
         3: {
@@ -80,7 +80,7 @@ addLayer("^", {
             title: "Exponentiative boost",
             display() {
                 return "Increase base point gain multiplier by one per purchase<br><br>Times bought: "
-                    + getBuyableAmount("+", 11).toString()
+                    + getBuyableAmount("^", 11).toString()
                     + "<br>Cost: "
                     + this.cost().toString()
                     + " exponentiative points<br>Effect: "
